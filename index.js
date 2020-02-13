@@ -37,7 +37,7 @@ function putTodo(req, res, dbo) {
     dbo.collection('todos').updateOne({_id: req.params.id}, {$set: {title: req.body.title, isCompleted: req.body.isCompleted}}, (err, result)=>{
         if(err) throw err;
         console.log("U ", req.params.id)
-        dbo.collection("todos").findOne({_id:result.insertedId}, (error, findResult)=>{
+        dbo.collection("todos").findOne({_id:req.params.id}, (error, findResult)=>{
             if(error) throw error;
             console.log(" Find ", findResult)
             res.status(200).send(findResult)
