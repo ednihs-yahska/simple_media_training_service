@@ -14,6 +14,14 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
+function transform(findResult) {
+    const _findResult = {}
+    _findResult.id = findResult._id
+    _findResult.title = findResult.title
+    _findResult.isCompleted = findResult.isCompleted
+
+    return _findResult
+}
 
 MongoClient.connect(url, function(err, db) {
     if (err) throw err;
@@ -40,7 +48,8 @@ function putTodo(req, res, dbo) {
         dbo.collection("todos").findOne({_id:req.params.id}, (error, findResult)=>{
             if(error) throw error;
             console.log(" Find ", findResult)
-            res.status(200).send(findResult)
+            const _findResult = transform(findResult)
+            res.status(200).send(_findResult)
         })
     })
 }
@@ -58,7 +67,8 @@ function postTodo(req, res, dbo) {
             console.log("Inserted "+result.insertedId)
             dbo.collection("todos").findOne({_id:result.insertedId}, (error, findResult)=>{
                 console.log(" Find ", findResult)
-                res.status(201).send(findResult)
+                const _findResult = transform(findResult)
+                res.status(201).send(_findResult)
             })
         })
     })
@@ -70,6 +80,9 @@ function getAllTodos(req, res, dbo) {
     dbo.collection('todos').find({}).toArray((err, result)=>{
         if(err) throw err;
         console.log(result)
+        result = result.map((e, k)=>{
+            return transform(e)
+        })
         res.status(200).send(result)
     })
 }
