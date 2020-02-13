@@ -16,7 +16,9 @@ app.use(bodyParser.json())
 
 function transform(findResult) {
     const _findResult = {}
-    _findResult.id = findResult._id
+
+    const newId = parseInt(findResult._id)
+    _findResult.id = isNaN(newId) ? "" : newId
     _findResult.title = findResult.title
     _findResult.isCompleted = findResult.isCompleted
 
@@ -42,14 +44,17 @@ MongoClient.connect(url, function(err, db) {
 
 function putTodo(req, res, dbo) {
     console.log("req ", req.body)
-    dbo.collection('todos').updateOne({_id: req.params.id}, {$set: {title: req.body.title, isCompleted: req.body.isCompleted}}, (err, result)=>{
+    dbo.collection('todos').updateOne({_id: req.params.id}, {$set: {title: req.body.title, isCompleted: req.body.isCompleted||false}}, (err, result)=>{
         if(err) throw err;
         console.log("U ", req.params.id)
         dbo.collection("todos").findOne({_id:req.params.id}, (error, findResult)=>{
             if(error) throw error;
             console.log(" Find ", findResult)
-            const _findResult = transform(findResult)
-            res.status(200).send(_findResult)
+            if(findResult){
+                const _findResult = transform(findResult)
+                res.status(201).send(_findResult)
+            }
+            res.status(404).send()
         })
     })
 }
@@ -59,20 +64,21 @@ function postTodo(req, res, dbo) {
     
     dbo.collection('todos').find({}).toArray((err, result)=>{
         if(err) throw err;
-        const newId = result.length + 1
-        const todo = {_id: newId+"", ...req.body}
+        const newId = parseInt(Math.random()*1000)+"" + (result.length + 1)
+        const todo = {_id: newId, title:req.body.title, isCompleted:req.body.isCompleted||false}
         console.log("Todo ", todo)
         dbo.collection('todos').insertOne(todo, (err, result)=>{
             if(err) throw err;
             console.log("Inserted "+result.insertedId)
             dbo.collection("todos").findOne({_id:result.insertedId}, (error, findResult)=>{
                 console.log(" Find ", findResult)
-                const _findResult = transform(findResult)
-                res.status(201).send(_findResult)
+                if(findResult){
+                    const _findResult = transform(findResult)
+                    res.status(201).send(_findResult)
+                }
             })
         })
     })
-    
 }
 
 function getAllTodos(req, res, dbo) {
@@ -88,6 +94,7 @@ function getAllTodos(req, res, dbo) {
 }
 
 function deleteTodo(req, res, dbo) {
+    console.log("req del", req.params.id)
     dbo.collection("todos").deleteOne({_id:req.params.id}, (error, result)=>{
         if (error) throw error;
         console.log("count ", result.deletedCount);
