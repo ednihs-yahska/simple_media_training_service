@@ -47,16 +47,22 @@ function putTodo(req, res, dbo) {
 
 function postTodo(req, res, dbo) {
     console.log("req ", req.body)
-    const todo = {_id: shortid.generate(), ...req.body}
-    console.log("Todo ", todo)
-    dbo.collection('todos').insertOne(todo, (err, result)=>{
+    
+    dbo.collection('todos').find({}).toArray((err, result)=>{
         if(err) throw err;
-        console.log("Inserted "+result.insertedId)
-        dbo.collection("todos").findOne({_id:result.insertedId}, (error, findResult)=>{
-            console.log(" Find ", findResult)
-            res.status(201).send(findResult)
+        const newId = result.length + 1
+        const todo = {_id: newId+"", ...req.body}
+        console.log("Todo ", todo)
+        dbo.collection('todos').insertOne(todo, (err, result)=>{
+            if(err) throw err;
+            console.log("Inserted "+result.insertedId)
+            dbo.collection("todos").findOne({_id:result.insertedId}, (error, findResult)=>{
+                console.log(" Find ", findResult)
+                res.status(201).send(findResult)
+            })
         })
     })
+    
 }
 
 function getAllTodos(req, res, dbo) {
@@ -69,9 +75,9 @@ function getAllTodos(req, res, dbo) {
 }
 
 function deleteTodo(req, res, dbo) {
-    dbo.collection("todos").deleteOne({_id:{id: req.params.id}}, (error, _)=>{
+    dbo.collection("todos").deleteOne({_id:req.params.id}, (error, result)=>{
         if (error) throw error;
-        console.log("1 document deleted");
+        console.log("count ", result.deletedCount);
         res.status(200).send()
     })
 }
