@@ -1,0 +1,29 @@
+{
+  "name": "productive_now",
+  "version": "1.0.0",
+  "description": "ProductiveNow is a todo list",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/ednihs-yahska/productive_now.git"
+  },
+  "author": "Akshay Shinde",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ednihs-yahska/productive_now/issues"
+  },
+  "homepage": "https://github.com/ednihs-yahska/productive_now#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "mongodb": "^3.5.3",
+    "shortid": "^2.2.15"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
