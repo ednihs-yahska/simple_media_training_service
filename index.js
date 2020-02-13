@@ -52,7 +52,7 @@ function putTodo(req, res, dbo) {
             console.log(" Find ", findResult)
             if(findResult){
                 const _findResult = transform(findResult)
-                res.status(201).send(_findResult)
+                res.status(200).send(_findResult)
             }
             res.status(404).send()
         })
