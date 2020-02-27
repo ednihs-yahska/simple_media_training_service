@@ -1,0 +1,89 @@
+{
+    "title": "Open Flame",
+    "story":{
+        "title": "Open Flame Story",
+        "story_elements": [
+            {
+                "flow_id":"1",
+                "paragraph":"There are  more than 350,000 home fires each year in the U.S., resulting to about 2,000 deaths (National Fire Protection Association, 2013- 2017). There are many ways that fires start in a home, but they generally fall into one of two categories: fires caused by heat igniting flammable materials, and those caused by chemical reactions. Your home is FULL of objects and materials that can combust under the right conditions! Identifying and lowering these risks help you lower your risk house fire, keeping you and your home safer.",
+                "objective": "Find and adapt to all the fire hazards in your home.",
+                "start": "You smell something burning. Take a look around you to find the source. Scan your environment to find what is causing the burning smell and choose how you will adapt to the hazard.",
+                "media":"",
+                "options": [
+                    {
+                        "text": "Oh, it’s just a candle! No worries here.",
+                        "action":"1-1"
+                    },
+                    {
+                        "text": "That candle should be in a safer place, I’ll move it to a surface with more flat space.",
+                        "action":"1-2"
+                    },
+                    {
+                        "text": "That’s a short candle, I’ll blow it out just to be sure there’s no concern.",
+                        "action":"1-3"
+                    }
+                ]
+            },
+            {
+                "flow_id":"1-1",
+                "paragraph":"Oh no! That candle was really short and has now toppled over on to the surface! The fire is spreading- how will you adapt?",
+                "start": "",
+                "media":"",
+                "options": [
+                    {
+                        "text": "Throw a blanket on it! That should smother it.",
+                        "action":"1-1-1"
+                    },
+                    {
+                        "text": "I need to get out now, there’s a fire in the house!",
+                        "action":"1-1-2"
+                    },
+                    {
+                        "text": "I need to extinguish the fire! Where’s my fire extinguisher?",
+                        "action":"1-1-3"
+                    }
+                ]
+            },
+            {
+                "flow_id":"1-2",
+                "paragraph":"Oh no! That candle was really short and has now toppled over on to the surface! The fire is spreading- how will you adapt?",
+                "start": "",
+                "media":"",
+                "options": [
+                    {
+                        "text": "Throw a blanket on it! That should smother it.",
+                        "action":"1-1-1"
+                    },
+                    {
+                        "text": "I need to get out now, there’s a fire in the house!",
+                        "action":"1-1-2"
+                    },
+                    {
+                        "text": "I need to extinguish the fire! Where’s my fire extinguisher?",
+                        "action":"1-1-3"
+                    }
+                ]
+            },
+            {
+                "flow_id":"1-3",
+                "paragraph":"Oh no! That candle was really short and has now toppled over on to the surface! The fire is spreading- how will you adapt?",
+                "start": "",
+                "media":"",
+                "options": [
+                    {
+                        "text": "Throw a blanket on it! That should smother it.",
+                        "action":"1-1-1"
+                    },
+                    {
+                        "text": "I need to get out now, there’s a fire in the house!",
+                        "action":"1-1-2"
+                    },
+                    {
+                        "text": "I need to extinguish the fire! Where’s my fire extinguisher?",
+                        "action":"1-1-3"
+                    }
+                ]
+            }
+        ]
+    }
+}

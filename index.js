@@ -2,6 +2,8 @@ const express = require('express')
 const app = express()
 const port = 3000
 const shortid = require('shortid')
+const training = require("./modules/training")
+
 var MongoClient = require('mongodb').MongoClient;
 
 var url = "mongodb://localhost:27017/";
@@ -13,6 +15,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 // parse application/json
 app.use(bodyParser.json())
+
 
 function transform(findResult) {
     const _findResult = {}
@@ -28,6 +31,9 @@ function transform(findResult) {
 MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     var dbo = db.db("productive_now");
+
+
+    app.use("/training", training)
 
     app.get('/todos', (req, res) => getAllTodos(req, res, dbo))
 
