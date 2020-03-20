@@ -3,8 +3,31 @@ const app = express()
 const port = 3000
 const shortid = require('shortid')
 const training = require("./modules/training")
+const db = require("./db")
+var cors = require('cors')
 
-var MongoClient = require('mongodb').MongoClient;
+var os = require('os');
+var ifaces = os.networkInterfaces();
+
+Object.keys(ifaces).forEach(function (ifname) {
+    var alias = 0;
+  
+    ifaces[ifname].forEach(function (iface) {
+      if ('IPv4' !== iface.family || iface.internal !== false) {
+        // skip over internal (i.e. 127.0.0.1) and non-ipv4 addresses
+        return;
+      }
+  
+      if (alias >= 1) {
+        // this single interface has multiple ipv4 addresses
+        console.log(ifname + ':' + alias, iface.address);
+      } else {
+        // this interface has only one ipv4 adress
+        console.log(ifname, iface.address);
+      }
+      ++alias;
+    });
+});
 
 var url = "mongodb://localhost:27017/";
 
@@ -16,6 +39,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
+app.use(cors())
 
 function transform(findResult) {
     const _findResult = {}
@@ -28,9 +52,10 @@ function transform(findResult) {
     return _findResult
 }
 
-MongoClient.connect(url, function(err, db) {
+db.connect(url, (err) => {
     if (err) throw err;
-    var dbo = db.db("productive_now");
+    const connection = db.get()
+    var dbo = connection.db("hazadapt_trainer");
 
 
     app.use("/training", training)
@@ -47,6 +72,12 @@ MongoClient.connect(url, function(err, db) {
     
 
 });
+
+function createUser(req, res){
+    dbLayer.createOne('user').then((err, result)=>{
+        
+    })
+}
 
 function putTodo(req, res, dbo) {
     console.log("req ", req.body)
